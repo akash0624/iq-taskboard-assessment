@@ -57,6 +57,13 @@ describe("task access control", () => {
     expect(res.status).toBe(403);
   });
 
+  it("an unauthenticated user cannot update a task", async () => {
+    const res = await fetch(`${BASE_URL}/api/tasks/${taskId}`, {
+      method: "PATCH",
+    });
+    expect(res.status).toBe(401);
+  });
+
   // Test B
   it("a viewer cannot create a task", async () => {
     const res = await fetch(`${BASE_URL}/api/projects/${projectId}/tasks`, {
@@ -67,7 +74,7 @@ describe("task access control", () => {
       },
       body: JSON.stringify({ title: "viewer create attempt" }),
     });
-    expect(res.status).toBe(401);
+    expect(res.status).toBe(403);
   });
 
   // Test C
